@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { Plus, Bell, Calendar, Repeat, Trash2, Star, X } from "lucide-react";
-import DatePicker from "react-date-picker";
 import useTaskStore from "../store/TaskStore";
+import { MyDatePicker } from "../MyDatePicker";
 
 export function TaskEditor() {
   const [showCalendar, setShowCalendar] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [error, setError] = useState(null); // For error handling
 
   const isSelected = useTaskStore((state) => state.selectedTask !== null);
   const task = useTaskStore((state) => state.selectedTask);
@@ -16,6 +17,19 @@ export function TaskEditor() {
 
   if (!task) return null; 
   const { id, text, completed, important } = task;
+
+  const handleDateSelect = (date) => {
+    try {
+      if (date) {
+        setSelectedDate(date);
+        setError(null); // Clear any previous errors
+      } else {
+        throw new Error("Invalid date selected.");
+      }
+    } catch (e) {
+      setError(e.message);
+    }
+  };
 
   return (
     <aside
@@ -61,18 +75,22 @@ export function TaskEditor() {
           <div>
             <button
               onClick={() => setShowCalendar(!showCalendar)}
-              className="flex items-center w-full text-left space-x-3"
+              className="flex items-center w-full text-left space-x-3 mb-4"
             >
               <Calendar className="h-5 w-5" />
               <span>Add Due Date</span>
             </button>
             {showCalendar && (
               <div className="mt-2">
-                <DatePicker
-                  value={selectedDate}
-                  onChange={setSelectedDate}
-                  className="border border-gray-300 rounded-md"
+                <MyDatePicker
+                  onSelect={handleDateSelect}
+                  selected={selectedDate}
                 />
+                {error && (
+                  <p className="text-red-500 text-sm mt-2">
+                    {error}
+                  </p>
+                )}
               </div>
             )}
           </div>
