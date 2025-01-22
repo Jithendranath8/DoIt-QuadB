@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import { Plus, Bell, Calendar, Repeat, Trash2, Star, X } from "lucide-react";
 import useTaskStore from "../store/TaskStore";
 import { MyDatePicker } from "../MyDatePicker";
@@ -13,6 +13,7 @@ export function TaskEditor() {
   const isDarkMode = useTaskStore((state) => state.isDarkMode);
   const toggleComplete = useTaskStore((state) => state.toggleComplete);
   const toggleImportant = useTaskStore((state) => state.toggleImportant);
+  const handelDelete = useTaskStore((state) => state.handelDelete);
   const clearSelectedTask = useTaskStore((state) => state.clearSelectedTask);
 
   if (!task) return null; 
@@ -22,7 +23,7 @@ export function TaskEditor() {
     try {
       if (date) {
         setSelectedDate(date);
-        setError(null); // Clear any previous errors
+        setError(null); 
       } else {
         throw new Error("Invalid date selected.");
       }
@@ -109,8 +110,17 @@ export function TaskEditor() {
         >
           <X className="w-6 h-6" />
         </button>
-        <button className="p-2 rounded-lg hover:bg-gray-200">
-          <Trash2 className="w-6 h-6" />
+        <button className="p-2 rounded-lg hover:bg-gray-200"
+          onClick={(e) => {
+            e.stopPropagation();
+            handelDelete(task.id);
+            clearSelectedTask()
+
+          }}
+      >
+        <Trash2
+          className="size-6"
+        />
         </button>
       </div>
     </aside>

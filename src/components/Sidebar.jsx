@@ -28,7 +28,7 @@ export function Sidebar({ isOpen, isDarkMode }) {
               isDarkMode ? "text-white" : "text-gray-800"
             }`}
           >
-            Hey, ABCD
+            Hey, Admin 
           </h2>
         </div>
 

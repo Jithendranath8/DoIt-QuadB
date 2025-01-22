@@ -39,5 +39,9 @@ const useTaskStore = create((set) => ({
         task.id === id ? { ...task, important: !task.important } : task
       ),
     })),
+    handelDelete: (id) =>
+    set((state) => ({
+      tasks: state.tasks.filter((task) => task.id !== id),
+    })),
 }));
 export default useTaskStore;

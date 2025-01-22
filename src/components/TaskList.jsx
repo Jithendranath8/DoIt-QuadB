@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Bell, RotateCcw, Calendar, Star } from "lucide-react";
+import { Bell, RotateCcw, Calendar, Star} from "lucide-react";
 import { TaskEditor } from "./TaskEditor";
 import useTaskStore from "../store/TaskStore";
 
@@ -121,6 +121,7 @@ export function TaskList({ isDarkMode }) {
               >
                 {task.text}
               </span>
+
               <button
                 onClick={(e) => {
                   e.stopPropagation();
